@@ -19,7 +19,8 @@ Test Parameters are passed via a json file which has the following structure.
      		"cluster_node" : "node1.mycluster.mydomain.com",
      		"cluster_admin" : "john.doe@mydomain.com  		
      	}
- ]
+      ]
+ 
 
 
 Usage:
