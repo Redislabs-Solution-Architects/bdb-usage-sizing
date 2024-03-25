@@ -9,16 +9,16 @@ Test Parameters are passed via a json file which has the following structure.
 
    
   	[
-  	{
-  		"cluster_name" : "any suitable cluster name",
-  		"cluster_node" : "DN of any cluster node",
-  		"cluster_admin" : "cluster admin user name"
-  		
-  	},  {
-  		"cluster_name" : "cluster2",
-  		"cluster_node" : "node1.mycluster.mydomain.com",
-  		"cluster_admin" : "john.doe@mydomain.com  		
-  	}
+     	{
+     		"cluster_name" : "any suitable cluster name",
+     		"cluster_node" : "DN of any cluster node",
+     		"cluster_admin" : "cluster admin user name"		
+     	}, 
+      {
+     		"cluster_name" : "cluster2",
+     		"cluster_node" : "node1.mycluster.mydomain.com",
+     		"cluster_admin" : "john.doe@mydomain.com  		
+     	}
  ]
 
 
