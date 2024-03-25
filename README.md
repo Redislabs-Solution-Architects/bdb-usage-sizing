@@ -4,7 +4,7 @@ Simple bash script which leverages the REST API  to report on the usage and sizi
 The script requires the utility jq to be installed, it will prompt the user if its not.
 >apt install jq
 
-Parameters are passed in a json file which has the following structure.
+Test Parameters are passed via a json file which has the following structure.
 [
   	{
   		"cluster_name" : "any suitable cluster name",
@@ -19,3 +19,7 @@ Parameters are passed in a json file which has the following structure.
   		"cluster_admin" : "john.doe@mydomain.com  		
   	}
  ]
+
+Usage:
+
+./jsdGenerateRedisConsumptionReport.sh -f config_file.json
