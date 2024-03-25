@@ -4,7 +4,7 @@ Simple bash script which leverages the REST API  to report on the usage and sizi
 The script requires the utility jq to be installed, it will prompt the user if its not.
 >apt install jq
 
-Test Parameters are passed via a json file which has the following structure. 
+Test Parameters are passed via a json file. 
 See sample_test_config.json
 
 Usage:
