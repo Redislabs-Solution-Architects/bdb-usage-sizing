@@ -12,6 +12,7 @@ Usage:
 >./jsdGenerateRedisConsumptionReport.sh -f config_file.json
 
 Output:
+
 The output is a csv file named Report-yyyyMMddHHmmss.csv. It contains the following headers.
 
 cluster_name,db_name,version,usage_category,memory_size,data_persistence,replication,sharding,shard_count
