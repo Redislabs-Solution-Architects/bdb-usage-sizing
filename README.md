@@ -5,6 +5,7 @@ The script requires the utility jq to be installed, it will prompt the user if i
 >apt install jq
 
 Test Parameters are passed via a json file which has the following structure.
+
 [
   	{
   		"cluster_name" : "any suitable cluster name",
@@ -22,4 +23,4 @@ Test Parameters are passed via a json file which has the following structure.
 
 Usage:
 
-./jsdGenerateRedisConsumptionReport.sh -f config_file.json
+>./jsdGenerateRedisConsumptionReport.sh -f config_file.json
