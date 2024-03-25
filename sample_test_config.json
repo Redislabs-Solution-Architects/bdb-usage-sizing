@@ -1,0 +1,14 @@
+[
+	{
+		"cluster_name" : "cluster1",
+		"cluster_node" : "node1.jsd.demo.redislabs.com",
+		"cluster_admin" : "jay.dastur@redis.com"
+		
+	},
+		{
+		"cluster_name" : "cluster2",
+		"cluster_node" : "node1.jsd.demo.redislabs.com",
+		"cluster_admin" : "jay.dastur@redis.com"
+		
+	}
+]
