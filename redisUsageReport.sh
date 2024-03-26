@@ -113,10 +113,6 @@ if [ -e "$filename" ]; then
 	
 	for ((i = 0; i < ${#cluster_name_arr[@]}; i++)); do
 		
-		#cluster_name=$(jq --raw-output '.cluster_name' <<< "$item")
-		#cluster_node=$(jq --raw-output '.cluster_node' <<< "$item")
-		#cluster_admin=$(jq --raw-output '.cluster_admin' <<< "$item")
-		#admin_pwd=$(jq --raw-output '.admin_pwd' <<< "$item")
 		
 		cluster_name="${cluster_name_arr[i]}"
 		cluster_node="${cluster_node_arr[i]}"
