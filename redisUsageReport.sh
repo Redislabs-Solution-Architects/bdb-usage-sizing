@@ -88,6 +88,11 @@ if [ -e "$filename" ]; then
 		cluster_name=$(jq --raw-output '.cluster_name' <<< "$item")
 		cluster_node=$(jq --raw-output '.cluster_node' <<< "$item")
 		cluster_admin=$(jq --raw-output '.cluster_admin' <<< "$item")
+		cluster_api_port=$(jq --raw-output '.cluster_api_port' <<< "$item")
+
+		if [[ "$cluster_api_port" == null ]]; then
+				cluster_api_port="9443"
+		fi
 		
 		cluster_name_arr+=($cluster_name)
 		cluster_node_arr+=($cluster_node)
@@ -106,7 +111,7 @@ if [ -e "$filename" ]; then
 	echo ""
 	
 	#Load the header columns of the report file
-    echo "cluster_name,db_name,version,usage_category,memory_size,data_persistence,replication,sharding,shard_count" > $report_file
+    echo "cluster_name,expiration_date,shards_limit,ram_shards_in_use,db_name,version,usage_category,memory_size,data_persistence,replication,sharding,shard_count" > $report_file
 
 	##############################################
 	#load data for each cluster
@@ -124,11 +129,11 @@ if [ -e "$filename" ]; then
 		##############################################
 		#REST API Endpoints
 		##############################################	 	
-		CLUSTER_API_URL="https://$cluster_node:9443/v1/cluster"			
-		BDB_API_URL="https://$cluster_node:9443/v1/bdbs?fields=uid,name,backup,data_persistence,eviction_policy,memory_size,module_list,replication,sharding,shards_count,version"
-		
+		CLUSTER_API_URL="https://$cluster_node:$cluster_api_port/v1/cluster"	
+		CLUSTER_LICENSE_API_URL="https://$cluster_node:$cluster_api_port/v1/license"		
+		BDB_API_URL="https://$cluster_node:$cluster_api_port/v1/bdbs?fields=uid,name,backup,data_persistence,eviction_policy,memory_size,module_list,replication,sharding,shards_count,version"
 
-		
+	
 		#Test Connection to REST API
 		HTTP_CODE=$(curl -s -k -L -X GET -u "$cluster_admin:$admin_pwd" -w "%{http_code}" -H "Content-type:application/json"  $CLUSTER_API_URL)
 		
@@ -136,7 +141,7 @@ if [ -e "$filename" ]; then
 		if [[ "$HTTP_CODE" == *"200" ]]; then
 		
 			##############################################
-			#get details for the cluster
+			# get details for the cluster
 			##############################################	
 
 			while read item; do
@@ -144,7 +149,17 @@ if [ -e "$filename" ]; then
 			done < <(curl -s -k -L -X GET -u "$cluster_admin:$admin_pwd" -H "Content-type:application/json"  $CLUSTER_API_URL | jq -c '.')
 
 			##############################################
-			#get details for the cluster data bases
+			# get details for the cluster license
+			##############################################	
+
+			while read item; do
+				expiration_date=$(jq --raw-output '.expiration_date' <<< "$item")
+				shards_limit=$(jq --raw-output '.shards_limit' <<< "$item")
+				ram_shards_in_use=$(jq --raw-output '.ram_shards_in_use' <<< "$item")			
+			done < <(curl -s -k -L -X GET -u "$cluster_admin:$admin_pwd" -H "Content-type:application/json"  $CLUSTER_LICENSE_API_URL | jq -c '.')
+
+			##############################################
+			# get details for the cluster data bases
 			##############################################
 			
 			echo "Getting DB Details For Cluster: $cluster_name - $cluster_fqdn"
@@ -183,7 +198,7 @@ if [ -e "$filename" ]; then
 				done < <(echo "$(echo "$module_list_arr" | jq -c '.[]')")
 			
 				#write the record for the DB to the report file
-				echo "$cluster_fqdn,$db_name,$version,$usage_category,$memory_size,$data_persistence,$replication,$sharding,$shard_count" >> $report_file
+				echo "$cluster_fqdn,$expiration_date,$shards_limit,$ram_shards_in_use,$db_name,$version,$usage_category,$memory_size,$data_persistence,$replication,$sharding,$shard_count" >> $report_file
 							
 			
 			
