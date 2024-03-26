@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 function usage() {
 	echo "Description:"
     echo "This script leverages the Redis Rest API to report on the DB configuration within one or more Redis Enterprise Clusters."
@@ -15,7 +16,7 @@ function usage() {
     echo "see sample config file - sample_test_config.json"
 }
 
-# test
+
 
 # Check for arguments
 if [[ $# -eq 0 || $1 == '-h' || $1 == '--help' ]]; then
@@ -156,12 +157,14 @@ if [ -e "$filename" ]; then
 				memory_size=$(jq --raw-output '.memory_size' <<< "$cluster_db")
 				replication=$(jq --raw-output '.replication' <<< "$cluster_db")
 				sharding=$(jq --raw-output '.sharding' <<< "$cluster_db")
-				shard_count=$(jq --raw-output '.shards_count' <<< "$cluster_db")					
+				shard_count=$(jq --raw-output '.shards_count' <<< "$cluster_db")
+				backup=$(jq --raw-output '.backup' <<< "$cluster_db")	
+				eviction_policy=$(jq --raw-output '.eviction_policy' <<< "$cluster_db")							
 			
 				# find the usage type i.e. CACHE or DB
 				usage_category="CACHE"			
 							
-				if [[ "$data_persistence" != "disabled" ]]; then
+				if [[ "$data_persistence" != "disabled" || $backup == true || $eviction_policy == "noeviction" ]]; then
 					usage_category="DataBase"	
 				fi
 				
