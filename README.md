@@ -9,7 +9,7 @@ See sample_test_config.json
 
 Usage:
 
->./jsdGenerateRedisConsumptionReport.sh -f config_file.json
+>./redisUsageReport.sh -f config_file.json
 
 Output:
 
