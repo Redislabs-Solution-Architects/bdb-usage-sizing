@@ -15,6 +15,7 @@ function usage() {
     echo "see sample config file - sample_test_config.json"
 }
 
+# test
 
 # Check for arguments
 if [[ $# -eq 0 || $1 == '-h' || $1 == '--help' ]]; then
