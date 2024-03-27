@@ -1,0 +1,5 @@
+cluster_name,expiration_date,shards_limit,ram_shards_in_use,db_name,version,usage_category,memory_size,data_persistence,replication,sharding,shard_count
+jsd.demo.redislabs.com,2024-04-15T00:38:44Z,4,3,cache-db,7.2.3,CACHE,805306368,disabled,false,false,1
+jsd.demo.redislabs.com,2024-04-15T00:38:44Z,4,3,db1,7.2.3,DataBase,536870912,snapshot,false,true,2
+jsd.demo.redislabs.com,2024-04-15T00:38:44Z,4,3,cache-db,7.2.3,CACHE,805306368,disabled,false,false,1
+jsd.demo.redislabs.com,2024-04-15T00:38:44Z,4,3,db1,7.2.3,DataBase,536870912,snapshot,false,true,2
