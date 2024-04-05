@@ -2,14 +2,14 @@
 	{
 		"cluster_name" : "cluster1",
 		"cluster_node" : "node1.jsd.demo.redislabs.com",
-		"cluster_admin" : "jay.dastur@redis.com"
+		"cluster_admin" : "<admin email address>"
 		
 	},
 		{
 		"cluster_name" : "cluster2",
 		"cluster_node" : "node1.jsd.demo.redislabs.com",
 		"cluster_api_port" : "9443",
-		"cluster_admin" : "jay.dastur@redis.com"
+		"cluster_admin" : "<admin email address>"
 		
 	}
 ]
