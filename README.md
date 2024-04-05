@@ -10,7 +10,8 @@ See [sample_test_config.json](sample_test_config.json).
 
 ### Usage:
 
-Edit the input configuration file with the details of your clusters. Please note that you will be _prompted_ for passwords so they are not required to be saved in this file. 
+Edit the input configuration file with the details of your clusters. You will be _prompted_ for password as the script makes the connection to the cluster(s). 
+
 From the location that you saved the file:
 ` $ ./redisUsageReport.sh -f config_file.json ` or `$ bash redisUsageReport.sh -f config_file.json `
 
