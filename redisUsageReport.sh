@@ -111,7 +111,7 @@ if [ -e "$filename" ]; then
 	echo ""
 	
 	#Load the header columns of the report file
-    echo "cluster_name,expiration_date,shards_limit,ram_shards_in_use,db_name,version,usage_category,memory_size,data_persistence,replication,sharding,shard_count" > $report_file
+    echo "cluster_name,expiration_date,shards_limit,ram_shards_in_use,flash_shards_in_use,db_name,version,usage_category,memory_size,data_persistence,replication,sharding,shard_count,flash,crdt,crdt_guid" > $report_file
 
 	##############################################
 	#load data for each cluster
@@ -131,7 +131,8 @@ if [ -e "$filename" ]; then
 		##############################################	 	
 		CLUSTER_API_URL="https://$cluster_node:$cluster_api_port/v1/cluster"	
 		CLUSTER_LICENSE_API_URL="https://$cluster_node:$cluster_api_port/v1/license"		
-		BDB_API_URL="https://$cluster_node:$cluster_api_port/v1/bdbs?fields=uid,name,backup,data_persistence,eviction_policy,memory_size,module_list,replication,sharding,shards_count,version"
+		#BDB_API_URL="https://$cluster_node:$cluster_api_port/v1/bdbs?fields=uid,name,backup,data_persistence,eviction_policy,memory_size,module_list,replication,sharding,shards_count,version"
+		BDB_API_URL="https://$cluster_node:$cluster_api_port/v1/bdbs?fields=uid,name,backup,data_persistence,eviction_policy,memory_size,module_list,replication,sharding,shards_count,version,bigstore,crdt,crdt_guid"
 
 	
 		#Test Connection to REST API
@@ -156,6 +157,7 @@ if [ -e "$filename" ]; then
 				expiration_date=$(jq --raw-output '.expiration_date' <<< "$item")
 				shards_limit=$(jq --raw-output '.shards_limit' <<< "$item")
 				ram_shards_in_use=$(jq --raw-output '.ram_shards_in_use' <<< "$item")			
+				flash_shards_in_use=$(jq --raw-output '.flash_shards_in_use' <<< "$item")			
 			done < <(curl -s -k -L -X GET -u "$cluster_admin:$admin_pwd" -H "Content-type:application/json"  $CLUSTER_LICENSE_API_URL | jq -c '.')
 
 			##############################################
@@ -175,12 +177,15 @@ if [ -e "$filename" ]; then
 				shard_count=$(jq --raw-output '.shards_count' <<< "$cluster_db")
 				backup=$(jq --raw-output '.backup' <<< "$cluster_db")	
 				eviction_policy=$(jq --raw-output '.eviction_policy' <<< "$cluster_db")							
+				bigstore=$(jq --raw-output '.bigstore' <<< "$cluster_db")	
+				crdt=$(jq --raw-output '.crdt' <<< "$cluster_db")	
+				crdt_guid=$(jq --raw-output '.crdt_guid' <<< "$cluster_db")	
 			
 				# find the usage type i.e. CACHE or DB
-				usage_category="CACHE"			
+				usage_category="Cache"			
 							
 				if [[ "$data_persistence" != "disabled" || $backup == true || $eviction_policy == "noeviction" ]]; then
-					usage_category="DataBase"	
+					usage_category="Database"	
 				fi
 				
 				#check the modules enabled
@@ -192,13 +197,13 @@ if [ -e "$filename" ]; then
 					#check to see if search is enabled
 					if [[ "$module_name" == "search" ]]; then
 						#echo "Search Module Enabled"
-						usage_category="DataBase"	
+						usage_category="Database"	
 					fi				
 				
 				done < <(echo "$(echo "$module_list_arr" | jq -c '.[]')")
 			
 				#write the record for the DB to the report file
-				echo "$cluster_fqdn,$expiration_date,$shards_limit,$ram_shards_in_use,$db_name,$version,$usage_category,$memory_size,$data_persistence,$replication,$sharding,$shard_count" >> $report_file
+				echo "$cluster_fqdn,$expiration_date,$shards_limit,$ram_shards_in_use,$flash_shards_in_use,$db_name,$version,$usage_category,$memory_size,$data_persistence,$replication,$sharding,$shard_count,$bigstore,$crdt,$crdt_guid" >> $report_file
 							
 			
 			
